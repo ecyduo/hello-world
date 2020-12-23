@@ -1,0 +1,58 @@
+＃此工作流程将全新安装节点依赖项，构建源代码并在不同版本的节点上运行测试
+＃有关更多信息，请参见：https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+名称：jd_pet
+
+在：
+  workflow_dispatch：
+  时间表：
+    - cron的：' 35 23,4,10 * * * '
+  观看：
+    类型：[开始]
+  repository_dispatch：
+    类型：宠物
+职位：
+  建立：
+
+    运行：ubuntu-latest
+    如果：github.event.repository.owner.id == github.event.sender.id
+    步骤：
+      -名称：结帐
+        运行：|
+          git clone -b master https://github.com/lxk0301/jd_scripts.git〜/ jd_scripts
+      -名称：使用Node.js $ {{matrix.node-version}}
+        用途：actions / setup-node @ v1
+        与：
+          节点版本：$ {{matrix.node-version}}
+      -名称：缓存node_modules
+        使用：actions / cache @ v2 ＃使用GitHub官方的缓存Action。
+        env：
+          cache-name：缓存节点模块
+        与：
+          路径：node_modules
+          密钥：$ {{runner.os}}-$ {{env.cache-name}}-$ {{hashFiles（'package-lock.json'）}} ## package-lock.json的Hash作为缓存的密钥。也可以使用package.json代替
+      -名称：npm install
+        运行：|
+          cd〜/ jd_scripts
+          npm安装
+      -名称：'运行【东东萌宠】'
+        运行：|
+          cd〜/ jd_scripts
+          节点jd_pet.js
+        env：
+          JD_COOKIE：$ {{ secrets.JD_COOKIE }}
+          JD_DEBUG：$ {{ secrets.JD_DEBUG }}
+          PUSH_KEY：$ {{ secrets.PUSH_KEY }}
+          BARK_PUSH：$ {{ secrets.BARK_PUSH }}
+          PETSHARECODES：$ {{ secrets.PETSHARECODES }}
+          TG_BOT_TOKEN：$ {{ secrets.TG_BOT_TOKEN }}
+          TG_USER_ID：$ {{ secrets.TG_USER_ID }}
+          PET_NOTIFY_CONTROL：$ {{机密。PET_NOTIFY_CONTROL }}
+          BARK_SOUND：$ {{ secrets.BARK_SOUND }}
+          DD_BOT_TOKEN：$ {{ secrets.DD_BOT_TOKEN }}
+          DD_BOT_SECRET：$ {{ secrets.DD_BOT_SECRET }}
+          IGOT_PUSH_KEY：$ {{ secrets.IGOT_PUSH_KEY }}
+          QQ_SKEY：$ {{ secrets.QQ_SKEY }}
+          QQ_MODE：$ {{ secrets.QQ_MODE }}
+          PUSH_PLUS_TOKEN：$ {{机密。PUSH_PLUS_TOKEN }}
+          PUSH_PLUS_USER：$ {{机密。PUSH_PLUS_USER }}
